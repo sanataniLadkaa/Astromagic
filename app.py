@@ -7,7 +7,7 @@ import requests
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
-API_KEY = "AIzaSyA55kGhMDzfy7GRXm4uDHr5yQaSSVcIFh4"  # Replace with your actual API key
+API_KEY = "YOUR_API_KEY_HERE"  # Replace with your actual API key
 GENERATIVE_API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key={API_KEY}"
 
 @app.get("/", response_class=HTMLResponse)
@@ -52,4 +52,4 @@ async def predict(request: Request, name: str = Form(...), birth_date: str = For
     return templates.TemplateResponse("result.html", {"request": request, "result": result})
 
 if __name__ == "__main__":
-    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("app:app", host="0.0.0.0", port=8080, reload=True)
