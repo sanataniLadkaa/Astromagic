@@ -7,7 +7,7 @@ import requests
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
-API_KEY = "YOUR_API_KEY_HERE"  # Replace with your actual API key
+API_KEY = "AIzaSyA55kGhMDzfy7GRXm4uDHr5yQaSSVcIFh4"  # Replace with your actual API key
 GENERATIVE_API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key={API_KEY}"
 
 @app.get("/", response_class=HTMLResponse)
