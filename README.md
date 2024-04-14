@@ -1,4 +1,4 @@
-#Astromagic.AI
+## Astromagic.AI
 
 Astromagic.AI is a web application that provides personalized astrological insights and advice based on user input. By entering your name, birth date, birth time, and birth place, Astromagic.AI generates a personalized analysis of your zodiac sign, along with relationship, financial, health, and career advice.
 
