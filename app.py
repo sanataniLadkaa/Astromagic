@@ -7,7 +7,7 @@ import requests
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
-API_KEY = "AIzaSyA55kGhMDzfy7GRXm4uDHr5yQaSSVcIFh4"
+API_KEY = "AIzaSyA55kGhMDzfy7GRXm4uDHr5yQaSSVcIFh4"  # Replace with your actual API key
 GENERATIVE_API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key={API_KEY}"
 
 @app.get("/", response_class=HTMLResponse)
@@ -15,9 +15,9 @@ async def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 @app.post("/predict", response_class=HTMLResponse)
-async def predict(request: Request, name: str = Form(...), birth_date: str = Form(...),birth_time: str=Form(...), birth_place: str = Form(...)):
+async def predict(request: Request, name: str = Form(...), birth_date: str = Form(...), birth_time: str = Form(...), birth_place: str = Form(...)):
     print("Received POST request to /predict endpoint")
-    print(f"Name: {name}, Birth Date: {birth_date},Birth Time: {birth_time}, Birth Place: {birth_place}")
+    print(f"Name: {name}, Birth Date: {birth_date}, Birth Time: {birth_time}, Birth Place: {birth_place}")
 
     test_question = f"My name is {name} and my birth date is {birth_date} and my birth time is {birth_time} and my birth place is {birth_place} based on my given details please tell my zodiac sign and give relationship, financial, health, and career advice and some recommendation in each separate paragraph"
 
@@ -52,4 +52,4 @@ async def predict(request: Request, name: str = Form(...), birth_date: str = For
     return templates.TemplateResponse("result.html", {"request": request, "result": result})
 
 if __name__ == "__main__":
-    uvicorn.run("app:app", host="localhost", port=8000, reload=True)
+    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
