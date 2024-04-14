@@ -52,4 +52,4 @@ async def predict(request: Request, name: str = Form(...), birth_date: str = For
     return templates.TemplateResponse("result.html", {"request": request, "result": result})
 
 if __name__ == "__main__":
-    uvicorn.run("app:app", host="0.0.0.0", port=8080, reload=True)
+    uvicorn.run("app:app", host="13.228.225.19", port=8080, reload=True)
