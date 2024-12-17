@@ -7,49 +7,65 @@ import requests
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
-API_KEY = ""  # Replace with your actual API key
-GENERATIVE_API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key={API_KEY}"
+# Replace with your own API key
+API_KEY = "AIzaSyAPCWYCtTB_TivgGt9yNaYXXivxVFjijTw"
+GENERATIVE_API_URL = f"https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key={API_KEY}"
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
+    """Render the home page (index.html)"""
     return templates.TemplateResponse("index.html", {"request": request})
 
 @app.post("/predict", response_class=HTMLResponse)
-async def predict(request: Request, name: str = Form(...), birth_date: str = Form(...), birth_time: str = Form(...), birth_place: str = Form(...)):
-    print("Received POST request to /predict endpoint")
-    print(f"Name: {name}, Birth Date: {birth_date}, Birth Time: {birth_time}, Birth Place: {birth_place}")
+async def predict(
+    request: Request, 
+    name: str = Form(...), 
+    birth_date: str = Form(...), 
+    birth_time: str = Form(...), 
+    birth_place: str = Form(...)
+):
+    """Handle the prediction request"""
+    # Construct the input query for the API
+    test_question = (
+        f"My name is {name} and my birth date is {birth_date}, "
+        f"my birth time is {birth_time}, and my birth place is {birth_place}. "
+        f"Please tell me my zodiac sign and provide relationship, financial, health, "
+        f"and career advice, along with recommendations in separate paragraphs."
+    )
 
-    test_question = f"My name is {name} and my birth date is {birth_date} and my birth time is {birth_time} and my birth place is {birth_place} based on my given details please tell my zodiac sign and give relationship, financial, health, and career advice and some recommendation in each separate paragraph"
-
+    # Define the payload for the API request
     payload = {
         "contents": [
             {
                 "parts": [
-                    {
-                        "text": test_question
-                    }
+                    {"text": test_question}
                 ]
             }
         ]
     }
 
+
+    # API request headers
     headers = {
         "Content-Type": "application/json"
     }
 
-    response = requests.post(GENERATIVE_API_URL, json=payload, headers=headers)
+    try:
+        # Send the request to the external API
+        response = requests.post(GENERATIVE_API_URL, json=payload, headers=headers)
+        response.raise_for_status()
 
-    if response.status_code == 200:
-        result = response.json()["candidates"][0]["content"]["parts"][0]["text"]
-        print("Received response from external API:")
-        print(result)
-    else:
-        result = f"Error: {response.text}"
-        print(f"Error in external API call: {response.text}")
+        # Debug: Print the full API response
+        print("API Response:", response.json())
 
-    print(f"Result: {result}")
-    print("Rendering result.html template")  # Debugging statement
+        # Extract the result text
+        result = response.json().get("candidates", [{}])[0].get("content", {}).get("parts", [{}])[0].get("text", "No response received.")
+    except Exception as e:
+        result = f"Error: {str(e)}"
+
+
+    # Render the result.html template with the response
     return templates.TemplateResponse("result.html", {"request": request, "result": result})
 
 if __name__ == "__main__":
-    uvicorn.run("app:app", host="0.0.0.0", port=80, reload=True)
+    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
