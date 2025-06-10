@@ -8,8 +8,8 @@ app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
 # Replace with your own API key
-API_KEY = "AIzaSyAPCWYCtTB_TivgGt9yNaYXXivxVFjijTw"
-GENERATIVE_API_URL = f"https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key={API_KEY}"
+API_KEY = "AIzaSyCQ2KiegVdV4ulfaPIUYsp-ve6IDKZUAxw"
+GENERATIVE_API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={API_KEY}"
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
